@@ -1,44 +1,63 @@
-export async function GET(request: Request) {
-    const response = await fetch('https://reqres.in/api/users?page=2', {
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(request: NextRequest, context: { params: { userId: string } }) {
+    const { userId } = context.params;
+
+    const response = await fetch(`https://reqres.in/api/users/${userId}`, {
         cache: "no-cache",
-        method: 'GET',
+        method: "GET",
         headers: {
             "Content-Type": "application/json",
         },
-    })
-    const data = await response.json()
+    });
 
-    return new Response(JSON.stringify(data.data), {
-        status: response.status,
+    const data = await response.json();
+
+    return NextResponse.json(data, {
+        status: 200,
         headers: {
-            'Content-Type': 'application/json',
-            'Cache-Control': 'no-store',
+            "Cache-Control": "no-store",
         },
-    })
+    });
 }
 
-export async function POST(request: Request) {
-    const {name, job} = await request.json()
-    const newUser = {
-        name,
-        job,
-    }
-    
-    const response = await fetch('https://reqres.in/api/users', {
+export async function PUT(request: NextRequest, context: { params: { userId: string } }) {
+    const { userId } = context.params;
+
+    const body = await request.json();
+    const response = await fetch(`https://reqres.in/api/users/${userId}`, {
         cache: "no-cache",
-        method: 'POST',
+        method: "PUT",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(newUser),
-    })
-    const data = await response.json()
+        body: JSON.stringify(body),
+    });
 
-    return new Response(JSON.stringify(data), {
+    const data = await response.json();
+
+    return NextResponse.json(data, {
         status: 201,
         headers: {
-            'Content-Type': 'application/json',
-            'Cache-Control': 'no-store',
-        }
-    })
+            "Cache-Control": "no-store",
+        },
+    });
+}
+
+export async function DELETE(request: NextRequest, context: { params: { userId: string } }) {
+    const { userId } = context.params;
+
+    const response = await fetch(`https://reqres.in/api/users/${userId}`, {
+        cache: "no-cache",
+        method: "DELETE",
+    });
+
+    if (!response.ok) {
+        return NextResponse.json(
+            { error: "Failed to delete user" },
+            { status: response.status }
+        );
+    }
+
+    return new NextResponse(null, { status: 204 });
 }

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest, { params }: { params: { userId: any } }) {
+export async function GET(request: NextRequest, { params }: { params: { userId: string } }) {
     const { userId } = params;
 
     const response = await fetch(`https://reqres.in/api/users/${userId}`, {
