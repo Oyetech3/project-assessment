@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest, context: { params: { userId: string } }) {
+type RouteParams = {
+    params: {
+      userId: string;
+    };
+  };
+
+export async function GET(request: NextRequest,  context : RouteParams) {
     const { userId } = context.params;
 
     const response = await fetch(`https://reqres.in/api/users/${userId}`, {
@@ -8,6 +14,7 @@ export async function GET(request: NextRequest, context: { params: { userId: str
         method: "GET",
         headers: {
             "Content-Type": "application/json",
+            "x-api-key": "reqres-free-v1",
         },
     });
 
@@ -21,7 +28,7 @@ export async function GET(request: NextRequest, context: { params: { userId: str
     });
 }
 
-export async function PUT(request: NextRequest, context: { params: { userId: string } }) {
+export async function PUT(request: NextRequest, context : RouteParams) {
     const { userId } = context.params;
 
     const body = await request.json();
@@ -30,6 +37,7 @@ export async function PUT(request: NextRequest, context: { params: { userId: str
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
+            "x-api-key": "reqres-free-v1",
         },
         body: JSON.stringify(body),
     });
@@ -44,12 +52,15 @@ export async function PUT(request: NextRequest, context: { params: { userId: str
     });
 }
 
-export async function DELETE(request: NextRequest, context: { params: { userId: string } }) {
+export async function DELETE(request: NextRequest,  context : RouteParams) {
     const { userId } = context.params;
 
     const response = await fetch(`https://reqres.in/api/users/${userId}`, {
         cache: "no-cache",
         method: "DELETE",
+        headers: {
+            "x-api-key": "reqres-free-v1",
+        },
     });
 
     if (!response.ok) {

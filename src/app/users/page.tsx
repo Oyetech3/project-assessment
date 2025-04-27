@@ -1,9 +1,17 @@
 "use client"
 
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const users = () => {
+
+    const {data: session} = useSession({
+        required: true,
+        onUnauthenticated() {
+            router.push('/auth/login')
+        }
+    })
 
     const [data, setData] = useState<any>([]) 
     const [postfix, setPostfix] = useState<boolean>(true)
@@ -14,8 +22,10 @@ const users = () => {
         const response = await fetch('/api', {
             cache: "no-cache",
             method: 'GET',
+            
         })
         const data = await response.json()
+        
         if(!response.ok) throw new Error(data.error || "something went wrong")
         console.log(data)
         setData(data)

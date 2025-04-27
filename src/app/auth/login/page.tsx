@@ -1,8 +1,10 @@
 "use client"
 
+import LoadingSpinner from "@/app/Loading";
+import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const login = () => {
         const [email, setEmail] = useState<string>('')
@@ -10,8 +12,20 @@ const login = () => {
         const [showPassword, setShowPassword] = useState<boolean>(false)
         const [error, setError] = useState<string>('')
         const [success, setSuccess] = useState<boolean>(false)
+        const [loading, setLoading] = useState<boolean>(false)
     
         const router = useRouter()
+        const {data: session, status} = useSession()
+
+        useEffect(() => {
+            if(status === "authenticated") {
+                router.push('/homepage')
+            }
+        }, [status, router])
+
+        if (status === 'loading') {
+            return <div><LoadingSpinner/></div>;
+          }
     
         const validate = () : string =>  {
             if(!email.includes('@')) return "Please enter a valid email address"
@@ -31,11 +45,12 @@ const login = () => {
             }
     
             try {
-                const response = await fetch('https://reqres.in/api/login', {
+                /*const response = await fetch('https://reqres.in/api/login', {
                     cache: 'no-cache',
                     method: 'POST',
                     headers: {
-                        'Content-Type': "application/json"
+                        'Content-Type': "application/json",
+                        'x-api-key': 'reqres-free-v1',
                     },
                     body: JSON.stringify({email,password})
                 })
@@ -51,10 +66,33 @@ const login = () => {
                     localStorage.setItem('token',data.token)
                     localStorage.setItem('email',data.email)
                     
-                    router.push('/homepage')
+                    router.push('/homepage') */
+
+                    const result = await signIn('credentials', {
+                        email,
+                        password,
+                        redirect: false,
+                    })
+                    if(result?.error) {
+                        setError(result.error)
+                        setSuccess(false)
+                        return
+                    }
+                    else {
+                        setSuccess(true)
+                        setError('')
+                        setEmail('')
+                        setPassword('')
+                        router.push('/homepage')
+                    }
             }
             catch(err : any) {
-                return setError(err.message || "something went wrong")
+                setError(err.message || "something went wrong")
+                setSuccess(false) 
+                return  
+            }
+            finally {
+                setLoading(false)
             }
         }
 

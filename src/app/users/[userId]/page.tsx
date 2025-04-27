@@ -1,5 +1,6 @@
 "use client"
 
+import LoadingSpinner from "@/app/Loading";
 import { useEffect, useState } from "react";
 
 const userid =  ({params} : {params : Promise<{userId : number | any}>})  => {
@@ -8,9 +9,6 @@ const userid =  ({params} : {params : Promise<{userId : number | any}>})  => {
 
     //const userId =  params.userId
 
-    
-
-    
 
     useEffect(() => {
         params.then((res) => {
@@ -55,7 +53,7 @@ const userid =  ({params} : {params : Promise<{userId : number | any}>})  => {
                             </div> 
                         </div> : 
                         <div className="my-3">
-                            <h3 className="text-gray-500">Loading...</h3>
+                            <LoadingSpinner/>
                         </div>
             }
 

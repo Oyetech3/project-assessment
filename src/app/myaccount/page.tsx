@@ -1,10 +1,18 @@
 "use client"
 
+import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import React, { useState } from "react"
 
 const myaccount = () => {
-        const [email, setEmail] = useState<string>('')
+        const {data: session} = useSession({
+            required: true,
+            onUnauthenticated() {
+                router.push('/auth/login')
+            }
+        })
+        
+        const [email, setEmail] = useState<string>(session?.user.email || '')
         const [password, setPassword] = useState<string>('')
         const [confirmPassword, setConfirmPassword] = useState<string>('')
         const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -31,30 +39,12 @@ const myaccount = () => {
                 setError(errorMessage)
                 return
             }
-    
-            try {
-                const response = await fetch('https://reqres.in/api/register', {
-                    cache: 'no-cache',
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': "application/json"
-                    },
-                    body: JSON.stringify({email,password})
-                })
-    
-                const data = await response.json()
-                if(!response.ok) throw new Error(data.error || "something went wrong")
-                    setSuccess(true)
-                    setError('')
-                    setEmail('')
-                    setPassword('')
-                    setConfirmPassword('')
-    
-                    console.log(data)
-                    router.push('/login')
-            }
-            catch(err : any) {
-                return setError(err)
+            else {
+                setError('')
+                setSuccess(true)
+                setEmail('')
+                setPassword('')
+                setConfirmPassword('')
             }
         }
 
@@ -92,12 +82,12 @@ const myaccount = () => {
 
                 <form onSubmit={handleSubmit} className="flex flex-col mt-2 gap-4 p-4 rounded-md shadow-md shadow-gray-300 ">
                     <label className="text-lg ">Change Your Email</label>
-                    <input type="email"  onChange={(e) => setEmail(e.target.value)} className="p-2 border border-gray-300 rounded-md" placeholder="Enter your new email" />
+                    <input type="email" value={email}  onChange={(e) => setEmail(e.target.value)} className="p-2 border border-gray-300 rounded-md" placeholder="Enter your new email" />
                     
                     <label className="text-lg">Change Your Password</label>
                     <div className="relative">
-                        <input type={showPassword ? "text" : "password"}  onChange={(e) => setPassword(e.target.value)} className="p-2 border border-gray-300 rounded-md w-full" placeholder="Enter your password" />
-                        <p className="absolute text-gray-400 right-3 top-1/2 transform -translate-y-1/2 cursor-pointer" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>{showConfirmPassword ? "HIDE" : "SHOW"}</p>
+                        <input type={showPassword ? "text" : "password"} value={password}  onChange={(e) => setPassword(e.target.value)} className="p-2 border border-gray-300 rounded-md w-full" placeholder="Enter your password" />
+                        <p className="absolute text-gray-400 right-3 top-1/2 transform -translate-y-1/2 cursor-pointer" onClick={() => setShowPassword(!showPassword)}>{showPassword ? "HIDE" : "SHOW"}</p>
                     </div>
 
                     <label className="text-lg">Comfirm New Password</label>
