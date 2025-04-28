@@ -3,21 +3,9 @@
 import LoadingSpinner from "@/app/Loading";
 import { useEffect, useState } from "react";
 
-const userid =  ({params} : {params : Promise<{userId : number | any}>})  => {
+const userid =  ({params} : {params : {userId: any}})  => {
     const [data, setData] = useState<any>(null)
-    const [userId, setUserId] = useState<number | any>(null)
-
-    //const userId =  params.userId
-
-
-    useEffect(() => {
-        params.then((res) => {
-            setUserId(res.userId)
-        })
-        .catch((err) => {
-            console.error(err)
-        })
-    }, [params])               
+    const userId =  params.userId             
     
     useEffect(() => {
         const fetchUser = async (id : number) : Promise<void> => {

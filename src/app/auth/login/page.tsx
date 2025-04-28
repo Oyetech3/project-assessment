@@ -68,23 +68,23 @@ const login = () => {
                     
                     router.push('/homepage') */
 
-                    const result = await signIn('credentials', {
-                        email,
-                        password,
-                        redirect: false,
-                    })
-                    if(result?.error) {
-                        setError(result.error)
-                        setSuccess(false)
-                        return
-                    }
-                    else {
-                        setSuccess(true)
-                        setError('')
-                        setEmail('')
-                        setPassword('')
-                        router.push('/homepage')
-                    }
+                const result = await signIn('credentials', {
+                    email,
+                    password,
+                    redirect: false,
+                })
+                if(result?.error) {
+                    setError(result.error)
+                    setSuccess(false)
+                    return
+                }
+                else {
+                    setSuccess(true)
+                    setError('')
+                    setEmail('')
+                    setPassword('')
+                    router.push('/homepage')
+                }
             }
             catch(err : any) {
                 setError(err.message || "something went wrong")
@@ -134,7 +134,7 @@ const login = () => {
                 </div>
 
                 <div className="flex items-end justify-between mt-4">
-                    <button type="submit" className="bg-blue-500 cursor-pointer text-white py-2 px-4 rounded-md mt-4 hover:bg-blue-600 transition duration-300">Log In</button>
+                    <button type="submit" className="bg-blue-500 mr-4 cursor-pointer text-white py-2 px-4 rounded-md mt-4 hover:bg-blue-600 transition duration-300">Log In</button>
                     <Link href={'/auth/register'} className="">Click here to <span className="text-red-600">register</span></Link>
                 </div>
                 

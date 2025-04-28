@@ -6,7 +6,7 @@ import { useState } from "react";
 
 const users = () => {
 
-    const {data: session} = useSession({
+    const {data: session, status} = useSession({
         required: true,
         onUnauthenticated() {
             router.push('/auth/login')
@@ -43,7 +43,7 @@ const users = () => {
             </div>
             <div className=" shadow-sm shadow-gray-500 p-4 rounded-b-lg">
                 <div className="flex items-center justify-between">
-                    <button onClick={fetchUsers} className="bg-blue-500 cursor-pointer text-white p-2 rounded-md hover:bg-blue-600 transition duration-300">GET USERS LIST</button>
+                    <button onClick={fetchUsers} className="bg-blue-500 cursor-pointer mr-3 text-white p-2 rounded-md hover:bg-blue-600 transition duration-300">GET USERS LIST</button>
                     <button onClick= {() => {router.push('/crud')}} className="bg-blue-500 cursor-pointer text-white p-2 rounded-md hover:bg-blue-600 transition duration-300">CREATE NEW USER</button>
                 </div>
 
@@ -56,15 +56,15 @@ const users = () => {
                     {
                         data && 
                         data.map((user: any) => (
-                        <div key={user.id} className=" flex rounded-md shadow-sm shadow-gray-500 p-4 my-2 bg-white items-center ">
-                            <img src={user.avatar} alt={user.first_name} className="w-24 h-24 rounded-full mt-2" />
-                            <div className="flex justify-between w-full ml-4 items-end">
-                                <div className="flex flex-col justify-center">
-                                    <h2 className="text-2xl text-blue-500 font-semibold  py-2 ">{user.first_name} {user.last_name}</h2>
-                                    <p className="text-gray-500">{user.email}</p>
+                        <div key={user.id} className=" flex flex-col md:flex-row md:gap-4 md:p-4 rounded-md shadow-sm shadow-gray-500 p-3 my-2 bg-white items-center ">
+                            <img src={user.avatar} alt={user.first_name} className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full mt-2" />
+                            <div className="flex flex-col lg:flex-row lg:ml-4 md:items-start lg:items-end mt-3 lg:mt-0 md:justify-between w-full ml-2 ">
+                                <div className="flex flex-col justify-center text-center md:text-left">
+                                    <h2 className="text-xl text-blue-500 font-semibold  py-1 lg:text-2xl lg:py-2 ">{user.first_name} {user.last_name}</h2>
+                                    <p className="text-sm lg:text-base text-gray-500 break-all lg:break-normal">{user.email}</p>
                                 </div>
-                                <div className="">
-                                    <button onClick={() => fetchOneUser(user.id)} className="bg-blue-500 cursor-pointer text-white p-2 rounded-md hover:bg-blue-600 transition duration-300" >VIEW ALONE</button>
+                                <div className="mt-3 lg:mt-0 ">
+                                    <button onClick={() => fetchOneUser(user.id)} className="text-sm sm:text-base bg-blue-500 cursor-pointer text-white p-1.5 md:p-2 w-full md:w-auto rounded-md hover:bg-blue-600 transition duration-300" >VIEW ALONE</button>
                                 </div>
                             </div> 
                         </div>

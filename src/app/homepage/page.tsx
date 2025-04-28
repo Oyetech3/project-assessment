@@ -38,7 +38,6 @@ const homepage = () => {
             setTimeLeft(`${minutes}:${seconds < 10 ? "0" : ""}${seconds}`);
           };
     
-          // Update immediately and then every second
           updateTimer();
           const interval = setInterval(updateTimer, 1000);
           return () => clearInterval(interval);
@@ -53,8 +52,8 @@ const homepage = () => {
               const lat = position.coords.latitude;
               const lon = position.coords.longitude;
 
-              console.log("Latitude:", lat, "Longitude:", lon);
-    
+              //console.log("Latitude:", lat, "Longitude:", lon);
+              
               setLatitude(lat);
               setLongitude(lon);
     
@@ -65,7 +64,7 @@ const homepage = () => {
                 const data = await res.json();
                 console.log(data);
     
-                const city = data.address.county + ", " +  data.address.state || data.display_name
+                const city =  data.display_name || data.address.county + ", " +  data.address.state
                 const country = data.address.country || "";
     
                 setLocationName(`${city}, ${country}`);
@@ -102,9 +101,9 @@ const homepage = () => {
         )}
             </div>
             <div className="shadow-sm shadow-gray-500 p-4 rounded-b-lg">
-                <div className="flex items-center justify-between ">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between ">
                     
-                    <div className="flex justify-start gap-12 pr-2">
+                    <div className="flex justify-start items-center gap-12 pr-2">
                         <div>
                             <Link href={'/myaccount'}>MY ACCOUNT</Link>
                         </div>
@@ -112,8 +111,8 @@ const homepage = () => {
                             <Link href={'/users'}>USERS</Link>
                         </div>
                     </div>
-                    <div>
-                    <button onClick={handleLogout} className="bg-blue-500 cursor-pointer text-white p-2 rounded-md hover:bg-blue-600 transition duration-300">LOG OUT</button>
+                    <div className="items-cent">
+                      <button onClick={handleLogout} className="bg-blue-500 mt-4 md:mt-0 cursor-pointer text-white p-2 rounded-md hover:bg-blue-600 transition duration-300">LOG OUT</button>
                     </div>
 
                 </div>

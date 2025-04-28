@@ -102,7 +102,7 @@ const register: React.FC = () => {
                 </div>
 
                 <div className="flex items-end justify-between mt-4">
-                    <button type="submit" className="bg-blue-500 cursor-pointer text-white py-2 px-4 rounded-md mt-4 hover:bg-blue-600 transition duration-300">Register</button>
+                    <button type="submit" className="bg-blue-500 mr-4 cursor-pointer text-white py-2 px-4 rounded-md mt-4 hover:bg-blue-600 transition duration-300">Register</button>
                     <Link href={'/auth/login'} className="">Already registerd ? <span className="text-blue-500">Login</span></Link>
                 </div>
                 
