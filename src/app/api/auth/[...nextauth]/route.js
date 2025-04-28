@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
+console.log('MY SECRET:', process.env.NEXTAUTH_SECRET)
 const authOptions = {
   providers: [
     CredentialsProvider({
