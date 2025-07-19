@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "../Loading";
 
-const homepage = () => {
+const Homepage = () => {
     const [timeLeft, setTimeLeft] = useState<string>("")
     const [latitude, setLatitude] = useState<number | null>(null);
     const [longitude, setLongitude] = useState<number | null>(null);
@@ -62,7 +62,7 @@ const homepage = () => {
                   `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
                 );
                 const data = await res.json();
-                console.log(data);
+                //console.log(data);
     
                 const city =  data.display_name || data.address.county + ", " +  data.address.state
                 const country = data.address.country || "";
@@ -74,7 +74,8 @@ const homepage = () => {
             },
             (error) => {
               console.error("Error getting location:", error);
-            }
+            },
+            { enableHighAccuracy: true }
           );
         } else {
           console.error("Geolocation is not supported by this browser.");
@@ -134,4 +135,4 @@ const homepage = () => {
      );
 }
  
-export default homepage;
+export default Homepage;

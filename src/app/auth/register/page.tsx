@@ -1,10 +1,11 @@
 "use client"
 
+import { X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-const register: React.FC = () => {
+const Register: React.FC = () => {
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [confirmPassword, setConfirmPassword] = useState<string>('')
@@ -12,6 +13,7 @@ const register: React.FC = () => {
     const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
     const [error, setError] = useState<string>('')
     const [success, setSuccess] = useState<boolean>(false)
+    const [ info, setInfo ] = useState(true)
 
     const router = useRouter()
 
@@ -38,7 +40,8 @@ const register: React.FC = () => {
                 cache: 'no-cache',
                 method: 'POST',
                 headers: {
-                    'Content-Type': "application/json"
+                    'Content-Type': "application/json",
+                    'x-api-key': 'reqres-free-v1'
                 },
                 body: JSON.stringify({email,password})
             })
@@ -51,16 +54,28 @@ const register: React.FC = () => {
                 setPassword('')
                 setConfirmPassword('')
 
-                console.log(data)
-                router.push('/login')
+                //console.log(data)
+                router.push('/auth/login')
         }
         catch(err : any) {
-            return setError(err)
+            setError(err.message || "Something went wrong")
         }
     }
 
     return ( 
         <div className="items-center justify-center m-auto w-2/3 min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+            <div className={`${info ? "flex" : "hidden"} bg-blue-500  flex-col gap-4 p-4 rounded-md mb-4`}>
+                <div className="flex justify-between items-center">
+                    <p className="text-white font-bold ">Quick Info: </p>
+                    <X onClick={() => setInfo(!info)} className="text-white cursor-pointer" />
+                </div>
+                <p className="text-white text-sm">
+                    To register, please use this specified email <span className="font-bold">'eve.holt@reqres.in'</span> only as any other different email won't accepted.
+                    You can use any password of your choice as long as it is validated by being 8 or more characters, consisting of an Uppercase
+                    letter , a special character and a number. You can try otherwise to see the error messages integration
+                </p>
+            </div>
+
             <h1 className="text-3xl text-blue-500 font-bold text-center">Register Page</h1>
             <p className="text-center mt-3">Please enter your credentials</p>
 
@@ -68,7 +83,7 @@ const register: React.FC = () => {
                 error && 
                 <div className="flex justify-between items-center w-full p-2 mt-4 bg-red-200 rounded-md" role="alert">
                     <p className="pl-3">{error}</p>
-                    <button onClick={() => setError('')} className="px-3 py-1 rounded-md hover:bg-red-300 cursor-pointer transition duration-300">
+                    <button title="error" onClick={() => setError('')} className="px-3 py-1 rounded-md hover:bg-red-300 cursor-pointer transition duration-300">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                         </svg>
@@ -80,7 +95,7 @@ const register: React.FC = () => {
                 success && 
                 <div className="flex justify-between items-center w-full p-2 mt-4 bg-green-200 rounded-md" role="alert">
                     <p className="pl-3">Registration successful</p>
-                    <button onClick={() => setSuccess(false)} className="mx-2 px-3 py-1 rounded-md hover:bg-green-300 cursor-pointer transition duration-300">
+                    <button title="succes" onClick={() => setSuccess(false)} className="mx-2 px-3 py-1 rounded-md hover:bg-green-300 cursor-pointer transition duration-300">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -92,7 +107,7 @@ const register: React.FC = () => {
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" className="border border-gray-300 rounded-md p-2 mt-4 w-full" required />
 
                 <div className="relative mt-4">
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" className="border border-gray-300 rounded-md p-2 mt-4 w-full" autoComplete="new-password" required />
+                    <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" className="border border-gray-300 rounded-md p-2 mt-4 w-full" autoComplete="new-password" required />
                     <p className="absolute text-gray-400 right-3 top-10 transform -translate-y-1/2 cursor-pointer" onClick={() => setShowPassword(!showPassword)}>{showPassword ? "HIDE" : "SHOW"}</p>
                 </div>
                 
@@ -103,7 +118,7 @@ const register: React.FC = () => {
 
                 <div className="flex items-end justify-between mt-4">
                     <button type="submit" className="bg-blue-500 mr-4 cursor-pointer text-white py-2 px-4 rounded-md mt-4 hover:bg-blue-600 transition duration-300">Register</button>
-                    <Link href={'/auth/login'} className="">Already registerd ? <span className="text-blue-500">Login</span></Link>
+                    <Link href={'/auth/login'} className="">Already registered ? <span className="text-blue-500">Login</span></Link>
                 </div>
                 
             </form>
@@ -111,4 +126,4 @@ const register: React.FC = () => {
      );
 }
  
-export default register;
+export default Register;

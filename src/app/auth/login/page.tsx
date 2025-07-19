@@ -1,6 +1,7 @@
 "use client"
 
 import LoadingSpinner from "@/app/Loading";
+import { X } from "lucide-react";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -13,6 +14,7 @@ const login = () => {
         const [error, setError] = useState<string>('')
         const [success, setSuccess] = useState<boolean>(false)
         const [loading, setLoading] = useState<boolean>(false)
+        const [ info, setInfo ] = useState(true)
     
         const router = useRouter()
         const {data: session, status} = useSession()
@@ -98,6 +100,17 @@ const login = () => {
 
     return ( 
         <div className="items-center justify-center m-auto w-2/3 min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+            <div className={`${info ? "flex" : "hidden"} bg-blue-500  flex-col gap-4 p-4 rounded-md mb-4`}>
+                <div className="flex justify-between items-center">
+                    <p className="text-white font-bold ">Quick Info: </p>
+                    <X onClick={() => setInfo(!info)} className="text-white cursor-pointer" />
+                </div>
+                <p className="text-white text-sm">
+                    To login, please use this specified email <span className="font-bold">'eve.holt@reqres.in'</span> only as any other different email won't accepted.
+                    You can use any password of your choice as long as it is validated by being 8 or more characters, consisting of an Uppercase
+                    letter , a special character and a number. You can try otherwise to see the error messages integration
+                </p>
+            </div>
             <h1 className="text-3xl text-blue-500 font-bold text-center">Log In Page</h1>
             <p className="text-center mt-3">Please enter your credentials</p>
 
@@ -105,7 +118,7 @@ const login = () => {
                 error && 
                 <div className="flex justify-between items-center w-full p-2 mt-4 bg-red-200 rounded-md" role="alert">
                     <p className="pl-3">{error}</p>
-                    <button onClick={() => setError('')} className="px-3 py-1 rounded-md hover:bg-red-300 cursor-pointer transition duration-300">
+                    <button title="error" onClick={() => setError('')} className="px-3 py-1 rounded-md hover:bg-red-300 cursor-pointer transition duration-300">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                         </svg>
@@ -117,7 +130,7 @@ const login = () => {
                 success && 
                 <div className="flex justify-between items-center w-full p-2 mt-4 bg-green-200 rounded-md" role="alert">
                     <p className="pl-3">Login Successfull</p>
-                    <button onClick={() => setSuccess(false)} className="px-3 py-1 rounded-md hover:bg-green-300 cursor-pointer transition duration-300">
+                    <button title="success" onClick={() => setSuccess(false)} className="px-3 py-1 rounded-md hover:bg-green-300 cursor-pointer transition duration-300">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
